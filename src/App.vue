@@ -1,28 +1,28 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<div>
+  <router-view></router-view>
+  <FooterNav v-show="$route.meta.isShowFooter"/>
+</div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import FooterNav from './components/FooterNav/FooterNav.vue'
+// 引入接口
+import { reqAddress, reqCategorys, reqShops } from "./api"
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
+ name: 'App',
+ components: {
+  FooterNav
+ },
+async mounted() {
+    // 地址信息
+    const result1 = await reqAddress("116.36867", "40.10038");
+    const result2 = await reqCategorys();
+    const result3 = await reqShops({ longitude: "116.36867", latitude: "40.10038" });
+    console.log(result1)
+    console.log(result2)
+    console.log(result3)
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="stylus" rel="stylesheet/stylus">
 </style>
