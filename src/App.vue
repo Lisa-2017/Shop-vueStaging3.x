@@ -5,15 +5,22 @@
 </div>
 </template>
 <script>
+// 引入FooterNav.vue组件
 import FooterNav from './components/FooterNav/FooterNav.vue'
 // 引入接口
-import { reqAddress, reqCategorys, reqShops } from "./api"
+// import { reqAddress, reqCategorys, reqShops } from "./api"
 export default {
  name: 'App',
  components: {
   FooterNav
  },
-async mounted() {
+ mounted () {
+   this.$store.dispatch('getAddress')
+   this.$store.dispatch('autoLogin')
+  //  this.$store.dispatch('getCategorys')
+  //  this.$store.dispatch('getShops')
+ }
+/* async mounted() {
     // 地址信息
     const result1 = await reqAddress("116.36867", "40.10038");
     const result2 = await reqCategorys();
@@ -21,7 +28,7 @@ async mounted() {
     console.log(result1)
     console.log(result2)
     console.log(result3)
-  }
+  } */
 }
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
