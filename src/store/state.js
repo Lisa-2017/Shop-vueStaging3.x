@@ -10,8 +10,16 @@ export default {
   categorys: [],
   // 商铺信息---数组
   shops: [],
+
   // 用户信息
   user:{},
   // token 标识
-  token:localStorage.getItem('token_key')
+  token:localStorage.getItem('token_key'),
+
+  // 点餐信息
+  goods:[],
+  // 评价信息
+  ratings:[],
+  // 商家信息
+  info:{}
 }

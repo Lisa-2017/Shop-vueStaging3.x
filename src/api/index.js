@@ -63,3 +63,12 @@ export const reqAutoLogin = ()=>ajax({
     needToken:true
   }
 }) 
+
+
+
+// 点餐接口
+export const reqGoods=()=>ajax('/goods')
+//评价接口
+export const reqRatings=()=>ajax('/ratings')
+//商家接口
+export const reqInfo=()=>ajax('/info')

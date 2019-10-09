@@ -1,8 +1,8 @@
 // 包含了多个间接修改状态数据的方法的对象
 // 引入mutation-types
-import { RECEIVE_ADDRESS, RECEIVE_CATEGORY, RECEIVE_SHOPS,RECEIVE_USER,RESET_USER,RECEIVE_TOKEN,RESET_TOKEN } from './mutation-types'
+import { RECEIVE_ADDRESS, RECEIVE_CATEGORY, RECEIVE_SHOPS,RECEIVE_USER,RESET_USER,RECEIVE_TOKEN,RESET_TOKEN, RECEIVE_GOODS, RECEIVE_RATINGS, RECEIVE_INFO } from './mutation-types'
 // 引入api
-import { reqAddress, reqCategorys, reqShops,reqAutoLogin } from '../api'
+import { reqAddress, reqCategorys, reqShops,reqAutoLogin, reqGoods, reqRatings, reqInfo } from '../api'
 
 export default {
   //  发送请求获取地址信息
@@ -63,6 +63,33 @@ export default {
       const user = result.data
       commit(RECEIVE_USER,user)
     }
+  },
+
+  // 获取点餐信息
+  async getGoods({commit}){
+    const result = await reqGoods()
+    if(result.code === 0){
+      const goods = result.data
+      commit(RECEIVE_GOODS,{goods})
+    }
+  },
+  // 获取评价信息
+  async getRatings({commit}){
+    const result = await reqRatings()
+    if(result.code === 0){
+      const ratings = result.data
+      commit(RECEIVE_RATINGS,{ratings})
+    }
+  },
+  // 获取商家信息
+  async getInfo({commit}){
+    const result = await reqInfo()
+    if(result.code === 0){
+      const info = result.data
+      commit(RECEIVE_INFO,{info})
+    }
   }
+
+
 
 }

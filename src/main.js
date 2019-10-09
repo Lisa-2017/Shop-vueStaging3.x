@@ -10,13 +10,11 @@ import Star from './components/Star/Star.vue'
 
 // 引入vee-validtejs文件
 import './vee-validate'
-
-// 引入mint-ui中的buttom
-import { Button } from 'mint-ui';
+// 引入mockjs文件
+import './mock/mock-server.js'
 
 Vue.component(Button.name, Button);
 Vue.component(Star.name, Star)
-
 // 注册全局组件（公共组件）
 Vue.component(Header.name, Header)
 
