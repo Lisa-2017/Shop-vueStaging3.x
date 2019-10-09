@@ -7,11 +7,13 @@ import store from './store'
 import Header from './components/Header/Header.vue'
 // 引入Star
 import Star from './components/Star/Star.vue'
+// 引入mint-ui中的buttom
+import { Button } from 'mint-ui';
 
 // 引入vee-validtejs文件
 import './vee-validate'
-// 引入mockjs文件
-import './mock/mock-server.js'
+import './mock/mock-server'
+
 
 Vue.component(Button.name, Button);
 Vue.component(Star.name, Star)

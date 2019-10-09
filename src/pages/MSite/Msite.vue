@@ -54,7 +54,11 @@ export default {
   },
   computed: {
     // 从vuex中的state中获取数据
-    ...mapState(['address','categorys']),
+    // ...mapState(['address','categorys']),
+    ...mapState({
+      address:state=>state.msite.address,
+      categorys:state=>state.msite.categorys
+    }),
     /**
      * 每一屏展示8条数据
      * categorys---数组---16条数据
@@ -86,6 +90,7 @@ export default {
       return bigArr
     }
   },
+
   async mounted() {
     // 提交action---获取的商铺的信息
     this.$store.dispatch('getShops')

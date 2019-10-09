@@ -1,6 +1,6 @@
 // 包含了多个状态数据的对象(对象中定义需要共享或者改变的数据)
 export default {
-  // 经度
+  /* // 经度
   longitude: '116.36867',
   // 纬度
   latitude: '40.10038',
@@ -21,5 +21,5 @@ export default {
   // 评价信息
   ratings:[],
   // 商家信息
-  info:{}
+  info:{} */
 }

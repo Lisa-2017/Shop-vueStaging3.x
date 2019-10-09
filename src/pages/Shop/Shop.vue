@@ -5,17 +5,17 @@
   <!-- 路由链接 -->
   <div class="tab">
       <div class="tab-item">
-        <router-link to='/shop/goods'>
+        <router-link to='/shop/goods' replace>
           点餐
         </router-link>
       </div>
       <div class="tab-item">
-        <router-link to='/shop/ratings'>
+        <router-link to='/shop/ratings' replace>
           评价
         </router-link>
       </div>
       <div class="tab-item">
-        <router-link to='/shop/info'>
+        <router-link to='/shop/info' replace>
           商家
         </router-link>
       </div>
@@ -29,6 +29,9 @@ import ShopHeader from '../../components/ShopHeader/ShopHeader.vue'
 export default {
   components: {
     ShopHeader
+  },
+  mounted () {
+    this.$store.dispatch('getInfo')
   }
 }
 </script>

@@ -19,7 +19,7 @@ axios.interceptors.request.use(config => {
   // 判断当前接口中是否需要携带 token
   if(config.headers.needToken){
     // 需要token ,去vuex的state中取token
-    const token = store.state.token
+    const token = store.state.user.token
     if(!token){
       // 没有token,报错
       const error = new Error('没有token,请重新登录')

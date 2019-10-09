@@ -50,7 +50,10 @@ import {mapState} from 'vuex'
 export default {
   computed: {
     // 从Vuex中获取数据
-    ...mapState(['shops'])
+    // ...mapState(['shops'])
+    ...mapState({
+      shops:state=>state.msite.shops
+    })
   }
 }
 </script>

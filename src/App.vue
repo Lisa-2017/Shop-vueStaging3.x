@@ -7,6 +7,8 @@
 <script>
 // 引入FooterNav.vue组件
 import FooterNav from './components/FooterNav/FooterNav.vue'
+
+
 // 引入接口
 // import { reqAddress, reqCategorys, reqShops } from "./api"
 export default {
