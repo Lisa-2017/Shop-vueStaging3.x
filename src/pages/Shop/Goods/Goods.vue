@@ -2,16 +2,16 @@
   <div>
     <div class="goods">
       <div class="menu-wrapper">
-        <ul>
+        <ul ref="leftUl"> 
           <!-- :class="{current:true}" -->
-          <li class="menu-item" :class="{current:currentIndex===index}" v-for="(good,index) in  goods" :key="index">
+          <li class="menu-item" :class="{current:currentIndex===index}" v-for="(good,index) in  goods" :key="index" @click="clickItem(index)">
             <img class="icon" :src="good.icon" v-if="good.icon" />
             <span class="text bottom-border-1px">{{good.name}}</span>
           </li>
         </ul>
       </div>
       <div class="foods-wrapper">
-        <ul>
+        <ul ref="rightUl">
           <li class="food-list-hook" v-for="(good,index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
             <ul>
@@ -52,7 +52,7 @@ export default {
   data() {
     return {
       scrollY: 120, //滑动的距离值
-      tops: [0, 100, 150, 200, 300]
+      tops: []// 滑动的数组
     }
   },
   computed: {
@@ -65,22 +65,72 @@ export default {
       const index = tops.findIndex(
         (top, index) => scrollY >= top && scrollY < tops[index + 1]
       )
+      // 判断索引值和当前组件中的索引值不相同时，将当前索引值保存起来      
+      if(this.index !== index&&this.leftScroll){
+        // 保存索引
+        this.index = index
+        // 立刻让左侧列表滑动到指定索引的位置
+        const li =this.$refs.leftUl.children[index]
+        this.leftScroll.scrollToElement(li,300)
+      }
       return index
     }
   },
-  mounted() {
+  async mounted() {
     // 发送请求获取goods数据
-    this.$store.dispatch('getGoods')
-
+    await this.$store.dispatch('getGoods')    
     // 初始化Bscroll---开始滑动，写在方法中统一调用
     this._initBscroll()
+    // 初始化tops数据
+    this._initTops()
   },
+
   methods: {
     // 初始化滑动对象
     _initBscroll() {
-      let scroll1 = new BScroll('.menu-wrapper')
-      let scroll2 = new BScroll('.foods-wrapper')
+      this.leftScroll = new BScroll('.menu-wrapper',{
+        click:true
+      })
+      this.rightScroll = new BScroll('.foods-wrapper',{
+        click:true,
+        probeType:1
+      })
+      // 右侧列表的滑动事件
+      this.rightScroll.on('scroll',({x,y})=>{
+        this.scrollY = Math.abs(y)
+      })
+
+     this.rightScroll.on('scrollEnd',({x,y})=>{
+       this.scrollY = Math.abs(y)
+     }) 
+
+    },
+    _initTops(){
+      // 获取列表的高度
+      const tops = []
+      let top=0
+      tops.push(top)
+      // 获取ul中所有的li
+      const list = this.$refs.rightUl.children
+      //将为数组转为真数组，遍历数组中的每一项并执行回调handler
+      Array.prototype.slice.call(list).forEach(li=>{
+        top += li.clientHeight
+        tops.push(top)
+      })
+      console.log(tops)
+      // 更新数据
+      this.tops = tops
+    },
+
+    // 点击左侧的列表选项，右侧的列表滑动
+    clickItem(index){
+      // 获取上下滑动的值
+      const scrollY = this.tops[index]
+      this.scrollY = scrollY
+      this.rightScroll.scrollTo(0,-scrollY,300)
     }
+
+
   }
 }
 </script>
