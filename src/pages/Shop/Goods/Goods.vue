@@ -2,9 +2,15 @@
   <div>
     <div class="goods">
       <div class="menu-wrapper">
-        <ul ref="leftUl"> 
+        <ul ref="leftUl">
           <!-- :class="{current:true}" -->
-          <li class="menu-item" :class="{current:currentIndex===index}" v-for="(good,index) in  goods" :key="index" @click="clickItem(index)">
+          <li
+            class="menu-item"
+            :class="{current:currentIndex===index}"
+            v-for="(good,index) in  goods"
+            :key="index"
+            @click="clickItem(index)"
+          >
             <img class="icon" :src="good.icon" v-if="good.icon" />
             <span class="text bottom-border-1px">{{good.name}}</span>
           </li>
@@ -12,13 +18,18 @@
       </div>
       <div class="foods-wrapper">
         <ul ref="rightUl">
-          <li class="food-list-hook" v-for="(good,index) in goods" :key="index">
+          <li
+            class="food-list-hook"
+            v-for="(good,index) in goods"
+            :key="index"
+          >
             <h1 class="title">{{good.name}}</h1>
             <ul>
               <li
                 class="food-item bottom-border-1px"
                 v-for="(food,index) in good.foods"
                 :key="index"
+                @click="showFood(food)"
               >
                 <div class="icon">
                   <img width="57" height="57" :src="food.icon" />
@@ -35,7 +46,7 @@
                     <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
-                    <CartControl :food="food"/>
+                    <CartControl :food="food" />
                   </div>
                 </div>
               </li>
@@ -44,18 +55,23 @@
         </ul>
       </div>
     </div>
+    <Food :food="food" ref="food" />
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 import BScroll from 'better-scroll'
+import Food from './Food.vue'
 
 export default {
+  components: {
+    Food
+  },
   data() {
     return {
       scrollY: 120, //滑动的距离值
-      tops: [],// 滑动的数组
-      food:{}
+      tops: [], // 滑动的数组
+      food: {}
     }
   },
   computed: {
@@ -68,20 +84,20 @@ export default {
       const index = tops.findIndex(
         (top, index) => scrollY >= top && scrollY < tops[index + 1]
       )
-      // 判断索引值和当前组件中的索引值不相同时，将当前索引值保存起来      
-      if(this.index !== index&&this.leftScroll){
+      // 判断索引值和当前组件中的索引值不相同时，将当前索引值保存起来
+      if (this.index !== index && this.leftScroll) {
         // 保存索引
         this.index = index
         // 立刻让左侧列表滑动到指定索引的位置
-        const li =this.$refs.leftUl.children[index]
-        this.leftScroll.scrollToElement(li,300)
+        const li = this.$refs.leftUl.children[index]
+        this.leftScroll.scrollToElement(li, 300)
       }
       return index
     }
   },
   async mounted() {
     // 发送请求获取goods数据
-    await this.$store.dispatch('getGoods')    
+    await this.$store.dispatch('getGoods')
     // 初始化Bscroll---开始滑动，写在方法中统一调用
     this._initBscroll()
     // 初始化tops数据
@@ -91,32 +107,31 @@ export default {
   methods: {
     // 初始化滑动对象
     _initBscroll() {
-      this.leftScroll = new BScroll('.menu-wrapper',{
-        click:true
+      this.leftScroll = new BScroll('.menu-wrapper', {
+        click: true
       })
-      this.rightScroll = new BScroll('.foods-wrapper',{
-        click:true,
-        probeType:1
+      this.rightScroll = new BScroll('.foods-wrapper', {
+        click: true,
+        probeType: 1
       })
       // 右侧列表的滑动事件
-      this.rightScroll.on('scroll',({x,y})=>{
+      this.rightScroll.on('scroll', ({ x, y }) => {
         this.scrollY = Math.abs(y)
       })
 
-     this.rightScroll.on('scrollEnd',({x,y})=>{
-       this.scrollY = Math.abs(y)
-     }) 
-
+      this.rightScroll.on('scrollEnd', ({ x, y }) => {
+        this.scrollY = Math.abs(y)
+      })
     },
-    _initTops(){
+    _initTops() {
       // 获取列表的高度
       const tops = []
-      let top=0
+      let top = 0
       tops.push(top)
       // 获取ul中所有的li
       const list = this.$refs.rightUl.children
       //将为数组转为真数组，遍历数组中的每一项并执行回调handler
-      Array.prototype.slice.call(list).forEach(li=>{
+      Array.prototype.slice.call(list).forEach(li => {
         top += li.clientHeight
         tops.push(top)
       })
@@ -126,14 +141,20 @@ export default {
     },
 
     // 点击左侧的列表选项，右侧的列表滑动
-    clickItem(index){
+    clickItem(index) {
       // 获取上下滑动的值
       const scrollY = this.tops[index]
       this.scrollY = scrollY
-      this.rightScroll.scrollTo(0,-scrollY,300)
+      this.rightScroll.scrollTo(0, -scrollY, 300)
+    },
+
+    // 点击li 显示食物详情信息对应的组件
+    showFood(food) {
+      // 更新数据
+      this.food = food
+      // 显示Food组件
+      this.$refs.food.toggleFood()
     }
-
-
   }
 }
 </script>
