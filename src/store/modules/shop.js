@@ -1,7 +1,11 @@
 // 引入mutation-types
-import { RECEIVE_GOODS, RECEIVE_RATINGS, RECEIVE_INFO } from '../mutation-types'
+import { RECEIVE_GOODS, RECEIVE_RATINGS, RECEIVE_INFO,ADD_FOOD_COUNT,REDUCE_FOOD_COUNT } from '../mutation-types'
 // 引入api
 import { reqGoods, reqRatings, reqInfo } from '../../api'
+// 引入Vue
+import Vue from 'vue'  
+
+
 const state={
   // 点餐信息
   goods:[],
@@ -10,6 +14,7 @@ const state={
   // 商家信息
   info:{}
 }
+
 const mutations={
   // 更新点餐信息
   [RECEIVE_GOODS](state,{goods}){
@@ -22,8 +27,29 @@ const mutations={
   // 更新商家信息
   [RECEIVE_INFO](state,{info}){
     state.info = info
-  }
+  },
+  
+  // 增加食品
+  [ADD_FOOD_COUNT](state,{food}){ 
+    //判断count属性是否存在，不存在则创建响应式属性
+    if(!food.count){
+      // Vue.set用于向响应式对象中添加一个属性，并确保这个新属性同样是响应式的，且触发视图更新(设置什么返回什么)
+      Vue.set(food,'count',1)
+      // food.count=1 这个不是响应式属性
+    }else{
+      food.count++
+    }
+  },
+  // 减少食品
+  [REDUCE_FOOD_COUNT](state,{food}){
+    //判断，当食品数量大于0 的时候执行减的操作
+    if(food.count>0){
+      food.count--
+    }
+  },
+
 }
+
 const actions={
   // 获取点餐信息
   async getGoods({commit}){
@@ -41,6 +67,7 @@ const actions={
       commit(RECEIVE_RATINGS,{ratings})
     }
   },
+
   // 获取商家信息
   async getInfo({commit}){
     const result = await reqInfo()
@@ -48,7 +75,20 @@ const actions={
       const info = result.data
       commit(RECEIVE_INFO,{info})
     }
+  },
+
+  //食物的数量操作
+  updateFoodCount({commit},{isAdd,food}){
+    //判断操作类型
+    if(isAdd){
+      // 增加
+      commit(ADD_FOOD_COUNT,{food})
+    }else{
+      //减少
+      commit(REDUCE_FOOD_COUNT,{food})
+    }
   }
+
 }
 const getters={}
 

@@ -14,7 +14,11 @@ import { Button } from 'mint-ui';
 import './vee-validate'
 import './mock/mock-server'
 
+// 引入CartControl组件
+import CartControl from './components/CartControl/CartControl.vue'
 
+// 注册全局组件：方式二直接使用使用字符串代替CartControl.name，在组件中就不用指定name了
+Vue.component('CartControl',CartControl)
 Vue.component(Button.name, Button);
 Vue.component(Star.name, Star)
 // 注册全局组件（公共组件）

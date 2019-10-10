@@ -34,7 +34,9 @@
                     <span class="now">￥{{food.price}}</span>
                     <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                   </div>
-                  <div class="cartcontrol-wrapper">CartControl组件</div>
+                  <div class="cartcontrol-wrapper">
+                    <CartControl :food="food"/>
+                  </div>
                 </div>
               </li>
             </ul>
@@ -52,7 +54,8 @@ export default {
   data() {
     return {
       scrollY: 120, //滑动的距离值
-      tops: []// 滑动的数组
+      tops: [],// 滑动的数组
+      food:{}
     }
   },
   computed: {
