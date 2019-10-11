@@ -4,6 +4,7 @@
       <div class="image-header">
         <img
           :src="food.image"
+          v-lazy="food.image"
         />
         <p class="foodpanel-desc">{{food.info}}</p>
         <div class="back" @click="toggleFood">

@@ -2,8 +2,7 @@
   <div>
     <div class="goods">
       <div class="menu-wrapper">
-        <ul ref="leftUl">
-          <!-- :class="{current:true}" -->
+        <ul ref="leftUl">          
           <li
             class="menu-item"
             :class="{current:currentIndex===index}"
@@ -106,6 +105,7 @@ export default {
     this._initBscroll()
     // 初始化tops数据
     this._initTops()
+
   },
 
   methods: {
@@ -139,7 +139,7 @@ export default {
         top += li.clientHeight
         tops.push(top)
       })
-      console.log(tops)
+      // console.log(tops)
       // 更新数据
       this.tops = tops
     },
